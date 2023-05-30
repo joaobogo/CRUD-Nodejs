@@ -8,7 +8,7 @@ const paramsValidation = async (req, res, next) => {
   }
   const registration = await fs.readFile(path, "utf-8");
   const registrationJSON = JSON.parse(registration);
-  const patientExists = registrationJSON.patients.some((patient) => patient.id === id);
+  const patientExists = registrationJSON.patients.some((patient) => patient.id === Number(id));
   if(patientExists){
     return next();
   }

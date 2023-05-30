@@ -1,8 +1,7 @@
 const fs = require("fs").promises;
 const express = require("express");
-const bodyValidation = require("./middlewares/bodyValidation")
-const paramsValidation = require("./middlewares/paramsValidation")
-
+const bodyValidation = require("./middlewares/bodyValidation");
+const paramsValidation = require("./middlewares/paramsValidation");
 
 const router = express.Router();
 const path = "./registration.json";
@@ -15,9 +14,9 @@ router.get("/patient", async (_req, res) => {
 router.post("/patient", bodyValidation, async (req, res) => {
   const registration = await fs.readFile(path, "utf-8");
   const registrationJSON = JSON.parse(registration);
-  const { id,name, birthday, email, address } = req.body;
+  const { id, name, birthday, email, address } = req.body;
   let patients = registrationJSON.patients;
-  patients.push({ id,name, birthday, email, address });
+  patients.push({ id, name, birthday, email, address });
   registrationJSON.patients = patients;
   await fs.writeFile(path, JSON.stringify(registrationJSON));
   res.status(201).json(registrationJSON);
@@ -29,14 +28,14 @@ router.put("/patient", bodyValidation, async (req, res) => {
   const { id, name, birthday, email, address } = req.body;
   let patients = registrationJSON.patients;
   patients = patients.map((item) => {
-    if (item.id == id) {
-      return {id,name, birthday, email, address };
+    if (item.id === Number(id)) {
+      return { id, name, birthday, email, address };
     }
     return item;
   });
   registrationJSON.patients = patients;
   await fs.writeFile(path, JSON.stringify(registrationJSON));
-  res.status(201).json(registrationJSON);
+  res.status(204).json(registrationJSON);
 });
 
 router.delete("/patient/:id", paramsValidation, async (req, res) => {
@@ -45,11 +44,11 @@ router.delete("/patient/:id", paramsValidation, async (req, res) => {
   const { id } = req.params;
   let patients = registrationJSON.patients;
   patients = patients.filter((item) => {
-    return item.id !== id;
+    return item.id !== Number(id);
   });
   registrationJSON.patients = patients;
   await fs.writeFile(path, JSON.stringify(registrationJSON));
-  res.status(201).json(registrationJSON);
+  res.status(204).json(registrationJSON);
 });
 
 module.exports = router;
