@@ -3,7 +3,9 @@ const bodyValidation = (req, res, next) => {
   if (!name || !price) {
     return res.status(400).json({ error: "name,price" });
   }
-  return next();
+  next()
 };
 
-module.exports = bodyValidation
+
+
+module.exports = bodyValidation;

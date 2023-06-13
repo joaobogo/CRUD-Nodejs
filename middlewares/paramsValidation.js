@@ -10,7 +10,7 @@ const paramsValidation = async (req, res, next) => {
   if (bebida) {
     return next();
   }
-  return res.status(404).json({ error: "Drink not found" });
+  return res.status(404).json({ error: "Patient not found" });
 };
 
 module.exports = paramsValidation;
